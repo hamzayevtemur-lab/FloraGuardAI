@@ -1,0 +1,98 @@
+{
+  "best_config": {
+    "lr": 0.001,
+    "optimizer": "AdamW",
+    "dropout_rate": 0.5
+  },
+  "best_val_f1_macro": 0.8183447963638749,
+  "all_trials": [
+    {
+      "trial_id": 2,
+      "config": {
+        "lr": 0.001,
+        "optimizer": "AdamW",
+        "dropout_rate": 0.5
+      },
+      "final_val_loss": 0.44513928531693087,
+      "final_val_accuracy": 0.8670513135281119,
+      "final_val_f1_macro": 0.8183447963638749
+    },
+    {
+      "trial_id": 6,
+      "config": {
+        "lr": 0.0005,
+        "optimizer": "AdamW",
+        "dropout_rate": 0.5
+      },
+      "final_val_loss": 0.43401009733396523,
+      "final_val_accuracy": 0.8672968328013749,
+      "final_val_f1_macro": 0.816237984830829
+    },
+    {
+      "trial_id": 1,
+      "config": {
+        "lr": 0.001,
+        "optimizer": "AdamW",
+        "dropout_rate": 0.3
+      },
+      "final_val_loss": 0.39791317664959375,
+      "final_val_accuracy": 0.8680333906211638,
+      "final_val_f1_macro": 0.811035750613309
+    },
+    {
+      "trial_id": 5,
+      "config": {
+        "lr": 0.0005,
+        "optimizer": "AdamW",
+        "dropout_rate": 0.3
+      },
+      "final_val_loss": 0.675363697556117,
+      "final_val_accuracy": 0.7843113184384974,
+      "final_val_f1_macro": 0.7011733505769493
+    },
+    {
+      "trial_id": 3,
+      "config": {
+        "lr": 0.001,
+        "optimizer": "SGD",
+        "dropout_rate": 0.3
+      },
+      "final_val_loss": 1.5036013093592933,
+      "final_val_accuracy": 0.6122023078811687,
+      "final_val_f1_macro": 0.3751812377495204
+    },
+    {
+      "trial_id": 4,
+      "config": {
+        "lr": 0.001,
+        "optimizer": "SGD",
+        "dropout_rate": 0.5
+      },
+      "final_val_loss": 1.5777697174782663,
+      "final_val_accuracy": 0.5861772649152959,
+      "final_val_f1_macro": 0.34693561665305367
+    },
+    {
+      "trial_id": 7,
+      "config": {
+        "lr": 0.0005,
+        "optimizer": "SGD",
+        "dropout_rate": 0.3
+      },
+      "final_val_loss": 1.8523435237921049,
+      "final_val_accuracy": 0.5033145101890498,
+      "final_val_f1_macro": 0.2541974908304355
+    },
+    {
+      "trial_id": 8,
+      "config": {
+        "lr": 0.0005,
+        "optimizer": "SGD",
+        "dropout_rate": 0.5
+      },
+      "final_val_loss": 1.9367589875634987,
+      "final_val_accuracy": 0.48821507488337834,
+      "final_val_f1_macro": 0.23387123293490378
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environments
+env/
+venv/
+myvenv/
+.venv/
+ENV/
+
+# Large Datasets (PlantVillage is ~822MB+)
+data/raw/*
+!data/raw/README.md
+data/processed/*
+!data/processed/README.md
+
+# Large Model Checkpoints (> 100MB hard limit on GitHub)
+models/*.pt
+models/*.pth
+models/*.bin
+models/*.onnx
+!models/README.md
+!models/.gitkeep
+
+# IDEs & OS artifacts
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.ipynb_checkpoints/
+
+# Logs & scratch
+*.log
+scratch/

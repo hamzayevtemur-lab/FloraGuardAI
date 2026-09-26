@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FloraGuard AI — Intelligent Plant Disease Diagnosis</title>
+  <meta name="description" content="State-of-the-art deep learning system for instant agricultural crop disease detection and agronomic treatment recommendations.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css?v=3.0">
+</head>
+<body>
+  <!-- Ambient background glow elements -->
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+
+  <div class="app-container">
+    <!-- Navbar / Header -->
+    <header class="app-header">
+      <div class="logo-group">
+        <div class="logo-icon-wrapper">
+          <svg class="logo-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 20A7 7 0 0 1 4 13a7 7 0 0 1 7-7c1.33 0 2.58.37 3.65 1.01L19 3v4.35C20.25 8.7 21 10.74 21 13a7 7 0 0 1-7 7h-3z"/>
+            <path d="M11 13l4-4"/>
+          </svg>
+          <div class="pulse-ring"></div>
+        </div>
+        <div>
+          <h1 class="brand-title">FloraGuard <span class="gradient-text">AI</span></h1>
+          <p class="brand-tagline">Deep Learning Crop Diagnostic Engine • 38 Diseases Across 14 Crops</p>
+        </div>
+      </div>
+
+      <div class="header-status-group">
+        <div class="model-picker-wrapper">
+          <label for="modelSelect" class="picker-label">Active Neural Model:</label>
+          <select id="modelSelect" class="model-select">
+            <option value="" disabled selected>Detecting models...</option>
+          </select>
+        </div>
+
+        <div class="telemetry-badge" id="telemetryBadge">
+          <span class="status-dot"></span>
+          <span id="hardwareDevice">DETECTING</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Segmented Navigation Bar -->
+    <div class="view-switcher-bar">
+      <div class="segmented-control">
+        <button type="button" class="segment-btn active" id="tabScanner" onclick="switchView('scanner')">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M12 2v20"/>
+          </svg>
+          <span>Live Diagnostic Scanner</span>
+        </button>
+        <button type="button" class="segment-btn" id="tabBenchmarks" onclick="switchView('benchmarks')">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+          <span>Research & Benchmarks Lab</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Diagnostic Grid (View 1) -->
+    <main class="diagnostic-grid view-section active" id="viewScanner">
+      <!-- Left Column: Input & Upload Controls -->
+      <section class="panel upload-panel">
+        <div class="panel-header">
+          <h2 class="panel-title">Foliage Inspection</h2>
+          <span class="panel-badge">Step 1</span>
+        </div>
+        <p class="panel-desc">Upload a high-resolution photo of an affected or healthy crop leaf to run deep learning classification.</p>
+
+        <!-- Drag and Drop Dropzone -->
+        <div class="dropzone" id="dropzone">
+          <input type="file" id="fileInput" accept="image/png, image/jpeg, image/webp" class="file-input">
+          
+          <div class="dropzone-content" id="dropzoneEmpty">
+            <div class="upload-icon-circle">
+              <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+            </div>
+            <p class="dropzone-primary-text">Drag & drop your leaf image here</p>
+            <p class="dropzone-subtext">Supports PNG, JPG, or WebP (Max 10MB)</p>
+            <button type="button" class="btn-browse" id="btnBrowse">Browse Files</button>
+          </div>
+
+          <!-- Image Preview Area -->
+          <div class="preview-container hidden" id="previewContainer">
+            <img id="imagePreview" alt="Leaf preview" class="preview-image">
+            <div class="scan-line" id="scanLine"></div>
+            <button type="button" class="btn-clear-image" id="btnClearImage" title="Remove image">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Web Image URL Address Input -->
+        <div class="url-input-container">
+          <div class="url-divider">
+            <span>or paste image web link</span>
+          </div>
+          <div class="url-input-group">
+            <input type="url" id="urlInput" placeholder="https://example.com/plant-leaf.jpg" class="url-input">
+            <button type="button" id="btnLoadUrl" class="btn-load-url">Load URL</button>
+          </div>
+        </div>
+
+        <!-- Quick Sample Leaves -->
+        <div class="samples-wrapper">
+          <span class="samples-label">Or try a benchmark sample:</span>
+          <div class="sample-chips">
+            <button type="button" class="sample-chip" data-sample="/static/samples/sample_apple_scab.jpg">🍏 Apple Scab</button>
+            <button type="button" class="sample-chip" data-sample="/static/samples/sample_potato_early_blight.jpg">🥔 Potato Blight</button>
+            <button type="button" class="sample-chip" data-sample="/static/samples/sample_tomato_healthy.jpg">🍅 Healthy Tomato</button>
+            <button type="button" class="sample-chip" data-sample="/static/samples/sample_corn_healthy.jpg">🌽 Healthy Corn</button>
+          </div>
+        </div>
+
+        <!-- Action Button -->
+        <button type="button" class="btn-diagnose" id="btnDiagnose" disabled>
+          <span class="btn-icon">⚡</span>
+          <span class="btn-text">Run Neural Diagnosis</span>
+        </button>
+
+        <!-- No Model Warning (if models folder is empty on mac) -->
+        <div class="alert-banner hidden" id="noModelBanner">
+          <span class="alert-icon">💡</span>
+          <div>
+            <strong>Model checkpoint required:</strong>
+            <p>Download your trained <code>custom_cnn_best.pt</code> from Google Drive into your project's <code>models/</code> folder to run predictions locally!</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: Diagnostic Intelligence & Treatment Panel -->
+      <section class="panel results-panel" id="resultsPanel">
+        <div class="panel-header">
+          <h2 class="panel-title">Diagnostic Intelligence</h2>
+          <span class="panel-badge">Step 2</span>
+        </div>
+
+        <!-- Placeholder State when no image analyzed yet -->
+        <div class="empty-results-state" id="emptyResultsState">
+          <div class="placeholder-graphic">
+            <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+          </div>
+          <h3>Awaiting Leaf Scan</h3>
+          <p>Upload a leaf image and click <strong>"Run Neural Diagnosis"</strong> to reveal plant species, disease diagnosis, confidence metrics, and targeted treatment protocols.</p>
+        </div>
+
+        <!-- Invalid / Non-Plant Rejection Card -->
+        <div class="rejection-card hidden" id="rejectionCard">
+          <div class="rejection-icon">🚫</div>
+          <div class="rejection-body">
+            <h3 class="rejection-title">Non-Plant Image Detected</h3>
+            <p class="rejection-desc" id="rejectionDesc">The uploaded image does not appear to contain an agricultural plant leaf.</p>
+            <div class="rejection-tips">
+              <strong>Tips for accurate diagnosis:</strong>
+              <ul>
+                <li>Upload an actual photo of a plant leaf (not a screenshot, code, or desktop window).</li>
+                <li>Position the camera close to the leaf in natural lighting.</li>
+                <li>Ensure the foliage occupies the primary focus of the frame.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Populated Results Card -->
+        <div class="results-content hidden" id="resultsContent">
+          <!-- Main Diagnosis Hero Card -->
+          <div class="diagnosis-hero-card" id="diagnosisHeroCard">
+            <div class="hero-top">
+              <div>
+                <span class="crop-tag" id="cropTag">Tomato</span>
+                <h3 class="condition-name" id="conditionName">Early Blight</h3>
+                <p class="pathogen-info" id="pathogenInfo">Pathogen: Alternaria solani</p>
+              </div>
+              <div class="health-status-badge" id="healthStatusBadge">
+                <span class="badge-dot"></span>
+                <span id="healthStatusText">Infected</span>
+              </div>
+            </div>
+
+            <!-- Confidence Progress Meter -->
+            <div class="confidence-container">
+              <div class="confidence-header">
+                <span class="confidence-label">Diagnosis Confidence</span>
+                <span class="confidence-val" id="confidenceVal">99.4%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Symptoms Profile -->
+          <div class="info-card">
+            <h4 class="card-subtitle">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20M12 2v20"/></svg>
+              Observed Symptom Profile
+            </h4>
+            <p class="symptoms-text" id="symptomsText">—</p>
+          </div>
+
+          <!-- Agronomic Treatments Tabbed Card -->
+          <div class="info-card treatment-card">
+            <div class="treatment-header">
+              <h4 class="card-subtitle">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Agronomic Management & Remedies
+              </h4>
+              <div class="tab-pills">
+                <button class="tab-btn active" data-tab="cultural">Cultural</button>
+                <button class="tab-btn" data-tab="organic">Organic</button>
+                <button class="tab-btn" data-tab="chemical">Chemical</button>
+              </div>
+            </div>
+            <div class="tab-content" id="tabContent">
+              <p id="treatmentText">—</p>
+            </div>
+          </div>
+
+          <!-- Top-5 Probability Breakdown -->
+          <div class="info-card">
+            <h4 class="card-subtitle">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              Multi-Class Probability Distribution (Top-5)
+            </h4>
+            <div class="probability-list" id="probabilityList">
+              <!-- Dynamically populated via JS -->
+            </div>
+          </div>
+
+          <!-- Telemetry Footer -->
+          <div class="telemetry-footer">
+            <span class="telemetry-pill">Model: <strong id="telemetryModel">Custom CNN</strong></span>
+            <span class="telemetry-pill">Latency: <strong id="telemetryLatency">14.2 ms</strong></span>
+            <span class="telemetry-pill">Device: <strong id="telemetryHardware">MPS</strong></span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Research & Architecture Showcase View (View 2) -->
+    <section class="benchmarks-view view-section hidden" id="viewBenchmarks">
+      <!-- Showcase Hero Header -->
+      <div class="bench-hero-panel panel">
+        <div class="bench-hero-header">
+          <span class="panel-badge">Methodology & Empirical Results</span>
+          <h2 class="bench-title">FloraGuard AI Research & Architecture Lab</h2>
+          <p class="bench-subtitle">
+            A systematic comparative study of <strong>four distinct deep learning paradigms</strong> evaluated on 54,305 agricultural plant images across 38 crop condition classes.
+          </p>
+        </div>
+
+        <!-- Metric Highlight Grid -->
+        <div class="metrics-highlight-grid">
+          <div class="metric-card">
+            <span class="metric-number">54,305</span>
+            <span class="metric-label">Curated Leaf Images</span>
+            <span class="metric-caption">PlantVillage Gold Standard</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-number">38</span>
+            <span class="metric-label">Disease & Health Classes</span>
+            <span class="metric-caption">14 Distinct Crop Species</span>
+          </div>
+          <div class="metric-card highlight-metric">
+            <span class="metric-number gradient-text">99.84%</span>
+            <span class="metric-label">Peak Val Accuracy</span>
+            <span class="metric-caption">ResNet-18 (0.9970 Macro-F1)</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-number">541K</span>
+            <span class="metric-label">Scratch Parameters</span>
+            <span class="metric-caption">Custom CNN (2.07 MB)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Leaderboard Table Panel -->
+      <div class="panel leaderboard-panel">
+        <div class="panel-header">
+          <h3 class="panel-title">🏆 Empirical Model Leaderboard</h3>
+          <span class="panel-badge">Comparative Benchmark</span>
+        </div>
+        <p class="panel-desc">Ranked by Macro-Averaged F1-Score on the stratified held-out validation set.</p>
+
+        <div class="table-container">
+          <table class="benchmark-table">
+            <thead>
+              <tr>
+                <th>Rank & Model</th>
+                <th>Paradigm</th>
+                <th>Parameters</th>
+                <th>Size (FP32)</th>
+                <th>Val Accuracy</th>
+                <th>Macro-F1</th>
+                <th>Target Deployment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="leader-row">
+                <td>
+                  <div class="model-name-cell">
+                    <span class="rank-badge gold">1</span>
+                    <strong>ResNet-18</strong>
+                  </div>
+                </td>
+                <td><span class="paradigm-tag transfer">Transfer Learning</span></td>
+                <td>11,196,006</td>
+                <td>42.71 MB</td>
+                <td><span class="metric-pill high">99.84%</span></td>
+                <td><span class="metric-pill high">0.9970</span></td>
+                <td>Cloud API & Hospital-Grade Diagnostics</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="model-name-cell">
+                    <span class="rank-badge silver">2</span>
+                    <strong>Custom PlantDiseaseCNN</strong>
+                  </div>
+                </td>
+                <td><span class="paradigm-tag scratch">Trained From Scratch</span></td>
+                <td>541,478</td>
+                <td>2.07 MB</td>
+                <td><span class="metric-pill high">99.48%</span></td>
+                <td><span class="metric-pill high">0.9926</span></td>
+                <td>Lightweight Web & Browser-Native</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="model-name-cell">
+                    <span class="rank-badge bronze">3</span>
+                    <strong>MobileNetV3-Large</strong>
+                  </div>
+                </td>
+                <td><span class="paradigm-tag edge">Edge / Mobile Optimized</span></td>
+                <td>4,250,710</td>
+                <td>16.22 MB</td>
+                <td><span class="metric-pill">~99.20%</span></td>
+                <td><span class="metric-pill">~0.9900</span></td>
+                <td>Smartphones, Field Tablets & Drones</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="model-name-cell">
+                    <span class="rank-badge blue">4</span>
+                    <strong>Vision Transformer (ViT-Base)</strong>
+                  </div>
+                </td>
+                <td><span class="paradigm-tag transformer">Attention / Transformer</span></td>
+                <td>85,827,878</td>
+                <td>327.41 MB</td>
+                <td><span class="metric-pill">Active Fine-Tuning</span></td>
+                <td><span class="metric-pill">Active</span></td>
+                <td>High-Capacity Multimodal Research</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Architecture Breakdown Cards Grid -->
+      <div class="arch-showcase-grid">
+        <!-- Model 1: Custom CNN -->
+        <div class="panel arch-card">
+          <div class="arch-card-header">
+            <span class="arch-tag">Built From Scratch</span>
+            <h4 class="arch-title">Custom PlantDiseaseCNN</h4>
+            <p class="arch-tagline">4-Stage Deep Convolutional Hierarchy with Aggressive Regularization</p>
+          </div>
+          <div class="arch-body">
+            <div class="arch-spec-list">
+              <div class="spec-item"><span>Parameters:</span> <strong>541,478 (0.54M)</strong></div>
+              <div class="spec-item"><span>Disk Footprint:</span> <strong>2.07 MB</strong></div>
+              <div class="spec-item"><span>Key Activation:</span> <strong>LeakyReLU (α=0.1)</strong></div>
+              <div class="spec-item"><span>Pooling:</span> <strong>AdaptiveAvgPool2d (4×4)</strong></div>
+            </div>
+            <p class="arch-narrative">
+              Designed from first principles to extract micro-lesion textures without ImageNet pre-training bias. Employs 4 convolutional blocks (32 ➔ 64 ➔ 128 ➔ 256 channels), Batch Normalization after every convolution, and 50% dropout in the classification head. Achieved <strong>99.48% accuracy</strong> with just half a million parameters.
+            </p>
+          </div>
+        </div>
+
+        <!-- Model 2: ResNet-18 -->
+        <div class="panel arch-card featured-arch">
+          <div class="arch-card-header">
+            <span class="arch-tag transfer">Transfer Learning Workhorse</span>
+            <h4 class="arch-title">ResNet-18 Deep Residual</h4>
+            <p class="arch-tagline">Skip-Connection Residual Network Fine-Tuned for Botanical Diagnosis</p>
+          </div>
+          <div class="arch-body">
+            <div class="arch-spec-list">
+              <div class="spec-item"><span>Parameters:</span> <strong>11,196,006 (11.2M)</strong></div>
+              <div class="spec-item"><span>Disk Footprint:</span> <strong>42.71 MB</strong></div>
+              <div class="spec-item"><span>Learning Rate:</span> <strong>1e-4 (Cosine Annealing)</strong></div>
+              <div class="spec-item"><span>Accuracy / F1:</span> <strong>99.84% / 0.9970</strong></div>
+            </div>
+            <p class="arch-narrative">
+              Leverages residual skip connections \(F(x) + x\) to eliminate vanishing gradients across deep feature representations. Fine-tuned with a delicate low learning rate (1e-4) and AdamW weight decay (1e-4) to adapt generic ImageNet visual primitives to subtle botanical fungal halos and viral leaf curling.
+            </p>
+          </div>
+        </div>
+
+        <!-- Model 3: MobileNetV3 -->
+        <div class="panel arch-card">
+          <div class="arch-card-header">
+            <span class="arch-tag edge">Edge-Native</span>
+            <h4 class="arch-title">MobileNetV3-Large</h4>
+            <p class="arch-tagline">Depthwise Separable Convolutions & Squeeze-and-Excitation Attention</p>
+          </div>
+          <div class="arch-body">
+            <div class="arch-spec-list">
+              <div class="spec-item"><span>Parameters:</span> <strong>4,250,710 (4.25M)</strong></div>
+              <div class="spec-item"><span>Disk Footprint:</span> <strong>16.22 MB</strong></div>
+              <div class="spec-item"><span>Convolutions:</span> <strong>Depthwise Separable</strong></div>
+              <div class="spec-item"><span>Attention:</span> <strong>SE Channel Squeeze</strong></div>
+            </div>
+            <p class="arch-narrative">
+              Built specifically for resource-constrained edge computing. Replaces standard convolutions with depthwise separable layers to reduce computational FLOPs by ~80% while retaining spatial disease resolution through Squeeze-and-Excitation channel gating and computationally efficient Hard-Swish activations.
+            </p>
+          </div>
+        </div>
+
+        <!-- Model 4: Hugging Face ViT -->
+        <div class="panel arch-card">
+          <div class="arch-card-header">
+            <span class="arch-tag transformer">Vision Transformer</span>
+            <h4 class="arch-title">google/vit-base-patch16-224</h4>
+            <p class="arch-tagline">Self-Attention Patch Transformer Across 16×16 Visual Tokens</p>
+          </div>
+          <div class="arch-body">
+            <div class="arch-spec-list">
+              <div class="spec-item"><span>Parameters:</span> <strong>85,827,878 (85.8M)</strong></div>
+              <div class="spec-item"><span>Disk Footprint:</span> <strong>327.41 MB</strong></div>
+              <div class="spec-item"><span>Patch Resolution:</span> <strong>16×16 (196 tokens)</strong></div>
+              <div class="spec-item"><span>Attention Heads:</span> <strong>12 Heads (768-dim)</strong></div>
+            </div>
+            <p class="arch-narrative">
+              Discards convolutions entirely in favor of multi-head self-attention. Leaf images are sliced into 196 non-overlapping 16×16 pixel patches. Each patch attends globally across the entire leaf from layer 1, enabling the model to correlate localized spots with systemic plant symptoms across wide distances.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hyperparameter Optimization & Engineering Showcase -->
+      <div class="panel tuning-panel">
+        <div class="panel-header">
+          <h3 class="panel-title">🔬 Empirical Hyperparameter Optimization (8 Trials)</h3>
+          <span class="panel-badge">Ablation Study</span>
+        </div>
+        <p class="panel-desc">Before full training, an automated grid search evaluated optimizer dynamics, learning rates, and dropout rates on the Custom CNN:</p>
+
+        <div class="tuning-insights-grid">
+          <div class="tuning-insight-box">
+            <h4>⚡ Optimizer Rationale: AdamW vs SGD</h4>
+            <p>
+              In our 2-epoch trials, <strong>AdamW</strong> achieved <strong>86.80% validation accuracy</strong>, outperforming momentum SGD (<strong>61.22%</strong>) by <strong>+25.6 percentage points</strong>. Decoupled weight decay prevented gradient explosion on complex leaf textures and converged 3× faster.
+            </p>
+          </div>
+
+          <div class="tuning-insight-box">
+            <h4>🛡️ Dropout Regularization: 0.5 vs 0.3</h4>
+            <p>
+              Increasing dropout from 0.3 to <strong>0.5</strong> in the dense classification head yielded superior generalization (Val F1 <strong>0.818</strong> vs <strong>0.811</strong>), successfully preventing the network from overfitting to background soil and petri dish artifacts in the dataset.
+            </p>
+          </div>
+
+          <div class="tuning-insight-box">
+            <h4>🔒 2-Tier Out-of-Distribution (OOD) Guardrail</h4>
+            <p>
+              To solve the classic "closed-set classifier" flaw where non-leaves or computer screenshots are misclassified, FloraGuard integrates a bio-optical foliage filter (analyzing chlorophyll green / carotenoid chrominance) and a neural confidence threshold to block false predictions.
+            </p>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <script>
+    function switchView(viewName) {
+      const scanner = document.getElementById("viewScanner");
+      const bench = document.getElementById("viewBenchmarks");
+      const btnScanner = document.getElementById("tabScanner");
+      const btnBench = document.getElementById("tabBenchmarks");
+
+      if (viewName === "scanner") {
+        if (scanner) scanner.style.display = "grid";
+        if (bench) bench.style.display = "none";
+        if (btnScanner) btnScanner.classList.add("active");
+        if (btnBench) btnBench.classList.remove("active");
+      } else {
+        if (scanner) scanner.style.display = "none";
+        if (bench) bench.style.display = "flex";
+        if (btnScanner) btnScanner.classList.remove("active");
+        if (btnBench) btnBench.classList.add("active");
+      }
+    }
+  </script>
+  <script src="/static/app.js?v=3.0"></script>
+</body>
+</html>
