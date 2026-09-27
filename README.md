@@ -34,6 +34,56 @@ We systematically designed, tuned, and evaluated **four distinct deep learning p
 
 ---
 
+## 🏗️ End-to-End System Design & Full Workflow
+
+FloraGuard integrates client-side capture, asynchronous backend services, bio-optical validation, PyTorch GPU acceleration, and clinical agronomic protocols into a cohesive diagnostic pipeline:
+
+```mermaid
+graph LR
+    A[Client UI / URL Link] -->|HTTP / Multipart| B[FastAPI Gateway]
+    B -->|BytesIO Buffer| C[Bio-Optical Gatekeeper]
+    C -->|Rejects Non-Leaves| D[OOD Drop / Alert]
+    C -->|Valid Leaf| E[PyTorch Tensor Transform]
+    E -->|Normalized 224x224| F[ModelManager Inference]
+    F -->|Softmax Logits| G[Tier-2 Confidence Gate]
+    G -->|Top-1 > 50%| H[Agronomic KB Synthesis]
+    G -->|Top-1 < 50%| I[Low Confidence Warning]
+    H -->|JSON Envelope| J[Interactive Dashboard]
+```
+
+### 1. Ingestion & API Gateway (`FastAPI` + `httpx`)
+- **Dual Ingestion**: Users can upload files (`POST /api/predict`) or provide public web image URLs (`POST /api/predict-url`).
+- **Async Streaming**: URL payloads are streamed via `httpx.AsyncClient` with content-type verification and a 10MB safety threshold.
+- **Decompression**: Raw byte streams are parsed into PIL Image buffers in strict `RGB` mode.
+
+### 2. Preprocessing & Bio-Optical Gatekeeper (Tier-1 Guardrail)
+- **Foliage Chrominance Filter**: In HSV color space, the image is evaluated for chlorophyll green and carotenoid/necrotic brown pixel densities. Screenshots, code windows, indoor selfies, and non-organic objects are rejected before invoking neural compute.
+- **Spatial Transformation**: Bicubic interpolation scales images to $256 \times 256$, followed by CenterCrop to $224 \times 224$.
+- **Standardization**: `ToTensor()` maps $[0, 255]$ pixel values to $[0.0, 1.0]$ float tensors, normalized with ImageNet statistics ($\mu = [0.485, 0.456, 0.406]$, $\sigma = [0.229, 0.224, 0.225]$).
+
+### 3. Neural Inference Engine (`PyTorch` + `ModelManager`)
+- **Accelerator Dispatch**: Automatically routes tensors to Apple Silicon (`MPS`), NVIDIA GPUs (`CUDA`), or multi-threaded CPU.
+- **Dynamic Hot-Swapping**: The `ModelManager` singleton hot-swaps among our 4 evaluated architectures without restarting the server:
+  - **MobileNetV3-Large**: Benchmark Winner (99.84% Test Acc, 4.25M params, 16.2 MB)
+  - **ResNet-18**: Residual Transfer Learning (99.83% Test Acc, 11.2M params, 42.7 MB)
+  - **ViT-Base (Hugging Face)**: Multi-Head Self-Attention (99.68% Test Acc, 85.8M params)
+  - **Custom PlantDiseaseCNN**: Built from scratch (99.46% Test Acc, 541K params, 2.07 MB)
+- **Inference**: Evaluated under `torch.no_grad()`; output logits are transformed via Softmax into posterior probabilities across 38 crop condition classes.
+
+### 4. Tier-2 Confidence Gating & Agronomic Synthesis
+- **Neural Confidence Threshold**: If the highest predicted probability is below 50%, the prediction is flagged as uncertain/out-of-distribution.
+- **Differential Diagnosis**: The top-5 candidate classes and probability margins are computed.
+- **Knowledge Base Lookup**: `disease_info.py` maps the diagnosis to pathogen etiology (Fungal, Bacterial, Viral, Mite, Healthy) and delivers structured 3-tier treatment recommendations:
+  - **Cultural Controls**: Sanitation, crop spacing, airflow, and drip irrigation timing.
+  - **Organic Solutions**: Bio-fungicides (e.g. *Bacillus subtilis*), neem oil, and copper octanoate.
+  - **Chemical Treatments**: Targeted active ingredients with resistance management guidance.
+
+### 5. Reactive Client Presentation
+- Returns structured JSON to the browser with server-side latency telemetry.
+- Renders an interactive diagnostic badge, confidence percentage meter, Top-5 differential diagnosis bars, and tabbed treatment protocol instructions.
+
+---
+
 ## 🔬 Architectural Innovations
 
 1. **Custom 4-Stage PlantDiseaseCNN**:
