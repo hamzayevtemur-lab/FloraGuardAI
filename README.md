@@ -1,3 +1,14 @@
+---
+title: FloraGuard AI Plant Disease Diagnosis
+emoji: 🌿
+colorFrom: green
+colorTo: emerald
+sdk: docker
+app_port: 7860
+pinned: false
+license: apache-2.0
+---
+
 # 🌿 FloraGuard AI — Intelligent Agricultural Crop Disease Diagnosis
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org/)
@@ -167,6 +178,31 @@ uvicorn app.main:app --reload --port 8000
 Open your browser at **http://localhost:8000** to access:
 - **🌿 Live Diagnostic Scanner**: Drag-and-drop leaf photos or paste web image links for instant diagnosis and treatment advice.
 - **📊 Research & Benchmarks Lab**: Interactive empirical benchmark leaderboard and architectural deep-dives.
+
+---
+
+## ☁️ Cloud Deployment (1-Click & Free 24/7 Hosting)
+
+### Option 1: Hugging Face Spaces (Recommended for ML Portfolio)
+1. Navigate to **[Hugging Face — Create New Space](https://huggingface.co/new-space)**.
+2. Enter Space Name: `FloraGuardAI`.
+3. Select License: **Apache 2.0**.
+4. Select Space SDK: **Docker** (Blank).
+5. Choose **Public** visibility.
+6. Connect your GitHub repository:
+   - In Space Settings ➔ **Connect GitHub Repository** ➔ Select `hamzayevtemur-lab/FloraGuardAI`.
+   - Or push directly via Git:
+     ```bash
+     git remote add space https://huggingface.co/spaces/<YOUR-USERNAME>/FloraGuardAI
+     git push space main
+     ```
+7. Hugging Face automatically parses the `Dockerfile`, builds the CPU-optimized PyTorch container, mounts `models/custom_cnn_best.pt`, and launches the interactive dashboard at `https://huggingface.co/spaces/<YOUR-USERNAME>/FloraGuardAI`!
+
+### Option 2: Render.com
+1. Go to **[Render Dashboard](https://dashboard.render.com/)** ➔ **New Web Service**.
+2. Connect GitHub repository `hamzayevtemur-lab/FloraGuardAI`.
+3. Select **Docker** environment.
+4. Click **Create Web Service**. Render builds the image and launches it on your free `.onrender.com` domain.
 
 ---
 

@@ -1,0 +1,15 @@
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+.git/
+.gitignore
+data/raw/
+models/*.pt
+!models/custom_cnn_best.pt
+!models/mobilenet_best.pt
+.DS_Store

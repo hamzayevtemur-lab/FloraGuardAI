@@ -25,6 +25,7 @@ models/*.bin
 models/*.onnx
 !models/README.md
 !models/.gitkeep
+!models/custom_cnn_best.pt
 
 # IDEs & OS artifacts
 .DS_Store
