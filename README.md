@@ -11,16 +11,26 @@ The system features an interactive web dashboard, real-time REST API, an Out-of-
 
 ---
 
-## 🏆 Empirical Model Benchmark Leaderboard
+## 🏆 Empirical Held-Out Test Set Leaderboard (5,431 Leaves)
 
-We systematically designed, tuned, and evaluated **four distinct deep learning paradigms**:
+We systematically designed, tuned, and evaluated **four distinct deep learning paradigms** on the strictly held-out test split:
 
-| Rank & Architecture | Paradigm | Parameters | Disk Size | Val Accuracy | Macro-F1 | Deployment Profile |
-| :--- | :--- | :---: | :---: | :---: | :---: | :--- |
-| 🥇 **ResNet-18** | Transfer Learning | 11.20M | 42.7 MB | **99.84%** | **0.9970** | Cloud API & High-Throughput Diagnostic Labs |
-| 🥈 **Custom PlantDiseaseCNN** | Trained from Scratch | 541K | **2.07 MB** | **99.48%** | **0.9926** | Ultra-lightweight Web & Low-Power Embedded |
-| 🥉 **MobileNetV3-Large** | Depthwise Separable | 4.25M | 16.2 MB | **~99.20%** | **~0.9900** | Offline Mobile Phones & Agricultural Drones |
-| 🌟 **Vision Transformer (ViT-Base)** | Self-Attention Tokens | 85.83M | 327.4 MB | Active | Active | Foundation Model & Multimodal Research |
+| Rank & Architecture | Paradigm | Parameters | Disk Size | Test Accuracy | Macro-F1 | Best Epoch | Deployment Profile |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
+| 🥇 **MobileNetV3-Large** | Depthwise Separable | 4.25M | 16.2 MB | **99.84%** | **0.9977** | Epoch 18/20 | Offline Mobile Phones & Agricultural Drones |
+| 🥈 **ResNet-18** | Transfer Learning | 11.20M | 42.7 MB | **99.83%** | **0.9976** | Epoch 18/20 | Cloud API & High-Throughput Diagnostic Labs |
+| 🥉 **ViT-Base (Hugging Face)** | Self-Attention Tokens | 85.83M | 327.4 MB | **99.68%** | **0.9964** | Epoch 3/5 | Foundation Models & Pathology Research |
+| 🏅 **Custom PlantDiseaseCNN** | Trained from Scratch | 541K | **2.07 MB** | **99.46%** | **0.9916** | Epoch 24/24 | Ultra-lightweight Web & Low-Power Microcontrollers |
+
+<p align="center">
+  <img src="app/frontend/charts/test_benchmark_comparison.png" width="85%" alt="Empirical Test Set Benchmark Comparison" />
+</p>
+<p align="center">
+  <img src="app/frontend/charts/loss_convergence.png" width="85%" alt="Validation Loss Convergence Dynamics" />
+</p>
+<p align="center">
+  <img src="app/frontend/charts/architectural_pipeline.png" width="95%" alt="FloraGuard End-to-End Architectural Pipeline" />
+</p>
 
 ---
 

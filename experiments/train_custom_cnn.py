@@ -31,7 +31,7 @@ REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def train_custom_cnn(
-    epochs: int = 30,
+    epochs: int = 24,
     batch_size: int = 64,
     num_workers: int = 2,
 ):
@@ -149,6 +149,6 @@ def train_custom_cnn(
 
 
 if __name__ == "__main__":
-    train_custom_cnn(epochs=30, batch_size=64)
+    train_custom_cnn(epochs=24, batch_size=64)
 
 

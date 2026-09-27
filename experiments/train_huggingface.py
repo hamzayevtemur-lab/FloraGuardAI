@@ -37,7 +37,7 @@ CONFIG = {
     "weight_decay": 1e-4,
 }
 
-def train_huggingface(epochs: int=10, batch_size: int=32, num_workers: int=2):
+def train_huggingface(epochs: int = 5, batch_size: int = 32, num_workers: int = 2):
     device=get_device()
 
     print("=" * 70)
@@ -134,7 +134,7 @@ def train_huggingface(epochs: int=10, batch_size: int=32, num_workers: int=2):
 
 
 if __name__ == "__main__":
-    train_huggingface(epochs=10, batch_size=32)
+    train_huggingface(epochs=5, batch_size=32)
     
        
 

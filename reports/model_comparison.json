@@ -1,0 +1,45 @@
+{
+  "winner": "MobileNetV3-Large",
+  "leaderboard": [
+    {
+      "model": "MobileNetV3-Large",
+      "best_epoch": 18,
+      "parameters": 4250710,
+      "test_accuracy": 0.9984041247237908,
+      "test_f1_macro": 0.9977262645268793,
+      "test_precision_macro": 0.9978251273641481,
+      "test_recall_macro": 0.9976329594359511,
+      "test_loss": 0.009845665561170176
+    },
+    {
+      "model": "ResNet-18",
+      "best_epoch": 18,
+      "parameters": 11196006,
+      "test_accuracy": 0.9982813650871594,
+      "test_f1_macro": 0.9975903143298375,
+      "test_precision_macro": 0.9975011895198312,
+      "test_recall_macro": 0.9976941472145401,
+      "test_loss": 0.010918406910866901
+    },
+    {
+      "model": "ViT-Base (Hugging Face)",
+      "best_epoch": 3,
+      "parameters": 85827878,
+      "test_accuracy": 0.9968082494475816,
+      "test_f1_macro": 0.9964422588899314,
+      "test_precision_macro": 0.9963711145768875,
+      "test_recall_macro": 0.9965348541552137,
+      "test_loss": 0.012462800925676663
+    },
+    {
+      "model": "Custom CNN (Scratch)",
+      "best_epoch": 24,
+      "parameters": 541478,
+      "test_accuracy": 0.9945985759882151,
+      "test_f1_macro": 0.9916420577400106,
+      "test_precision_macro": 0.9914636655642936,
+      "test_recall_macro": 0.9918855411698511,
+      "test_loss": 0.02319889092370191
+    }
+  ]
+}
