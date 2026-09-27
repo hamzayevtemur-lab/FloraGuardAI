@@ -6,11 +6,19 @@ set -e
 
 HF_USERNAME=${1:-"TemurbekHamzaev"}
 SPACE_NAME=${2:-"FloraGuardAI"}
-REMOTE_URL="https://huggingface.co/spaces/${HF_USERNAME}/${SPACE_NAME}"
+HF_TOKEN=$3
+
+if [ -n "$HF_TOKEN" ]; then
+    REMOTE_URL="https://${HF_USERNAME}:${HF_TOKEN}@huggingface.co/spaces/${HF_USERNAME}/${SPACE_NAME}"
+    DISPLAY_URL="https://${HF_USERNAME}:***@huggingface.co/spaces/${HF_USERNAME}/${SPACE_NAME}"
+else
+    REMOTE_URL="https://huggingface.co/spaces/${HF_USERNAME}/${SPACE_NAME}"
+    DISPLAY_URL="${REMOTE_URL}"
+fi
 
 echo "=================================================================="
 echo "🌿 FLORAGUARD AI — DEPLOYING TO HUGGING FACE STATIC SPACE"
-echo "• Target Space:  ${REMOTE_URL}"
+echo "• Target Space:  ${DISPLAY_URL}"
 echo "• Hosting Mode:  100% Free Static CDN (Zero Compute Costs / No RAM Limit)"
 echo "=================================================================="
 
@@ -19,7 +27,10 @@ echo "📦 Packaging frontend assets (HTML, CSS, JS, Charts, Samples, Disease DB
 SUBTREE_HASH=$(git subtree split --prefix app/frontend main)
 
 echo "🚀 Pushing directly to Hugging Face Space repository..."
-echo "💡 (If prompted for password, enter your Hugging Face Access Token with WRITE permission)"
+if [ -z "$HF_TOKEN" ]; then
+    echo "💡 Enter Username: ${HF_USERNAME}"
+    echo "💡 Enter Password: (Paste your Hugging Face Token starting with hf_...)"
+fi
 git push "${REMOTE_URL}" "${SUBTREE_HASH}:refs/heads/main" --force
 
 echo ""
