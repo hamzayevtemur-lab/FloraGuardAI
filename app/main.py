@@ -11,7 +11,7 @@ from typing import Dict, Any
 
 from fastapi import FastAPI, File, UploadFile, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 
 # Add project root to sys.path
@@ -167,7 +167,29 @@ async def predict_plant_disease_from_url(payload: URLPredictionRequest) -> Dict[
 
 # Serve static web frontend
 if FRONTEND_DIR.exists():
+    # Mount /static for backwards compatibility
     app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR)), name="static")
+
+    # Mount subdirectories for relative asset links
+    if (FRONTEND_DIR / "charts").exists():
+        app.mount("/charts", StaticFiles(directory=str(FRONTEND_DIR / "charts")), name="charts")
+    if (FRONTEND_DIR / "samples").exists():
+        app.mount("/samples", StaticFiles(directory=str(FRONTEND_DIR / "samples")), name="samples")
+
+
+@app.get("/style.css")
+async def get_style():
+    return FileResponse(FRONTEND_DIR / "style.css")
+
+
+@app.get("/app.js")
+async def get_app_js():
+    return FileResponse(FRONTEND_DIR / "app.js")
+
+
+@app.get("/disease_info.js")
+async def get_disease_info():
+    return FileResponse(FRONTEND_DIR / "disease_info.js")
 
 
 @app.get("/", response_class=HTMLResponse)

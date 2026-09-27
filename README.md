@@ -181,28 +181,27 @@ Open your browser at **http://localhost:8000** to access:
 
 ---
 
-## ☁️ Cloud Deployment (1-Click & Free 24/7 Hosting)
+## ☁️ Cloud Deployment (1-Click & 100% Free Hosting)
 
-### Option 1: Hugging Face Spaces (Recommended for ML Portfolio)
-1. Navigate to **[Hugging Face — Create New Space](https://huggingface.co/new-space)**.
-2. Enter Space Name: `FloraGuardAI`.
-3. Select License: **Apache 2.0**.
-4. Select Space SDK: **Docker** (Blank).
-5. Choose **Public** visibility.
-6. Connect your GitHub repository:
-   - In Space Settings ➔ **Connect GitHub Repository** ➔ Select `hamzayevtemur-lab/FloraGuardAI`.
-   - Or push directly via Git:
-     ```bash
-     git remote add space https://huggingface.co/spaces/<YOUR-USERNAME>/FloraGuardAI
-     git push space main
-     ```
-7. Hugging Face automatically parses the `Dockerfile`, builds the CPU-optimized PyTorch container, mounts `models/custom_cnn_best.pt`, and launches the interactive dashboard at `https://huggingface.co/spaces/<YOUR-USERNAME>/FloraGuardAI`!
+### Option 1: Hugging Face Static Space (100% Free Forever — Zero Compute Costs)
+Hugging Face Static Spaces are completely free for everyone with no RAM limits, no sleep timeouts, and no PRO subscriptions required.
 
-### Option 2: Render.com
-1. Go to **[Render Dashboard](https://dashboard.render.com/)** ➔ **New Web Service**.
-2. Connect GitHub repository `hamzayevtemur-lab/FloraGuardAI`.
-3. Select **Docker** environment.
-4. Click **Create Web Service**. Render builds the image and launches it on your free `.onrender.com` domain.
+1. Create a Space on **[Hugging Face — New Space](https://huggingface.co/new-space)**:
+   - Space Name: `FloraGuardAI`
+   - License: `apache-2.0`
+   - Select Space SDK: **Static** ➔ Choose **Blank**.
+2. Run the deployment script from your terminal:
+   ```bash
+   ./scripts/deploy_to_hf_static.sh TemurbekHamzaev FloraGuardAI
+   ```
+   *(When prompted, enter your Hugging Face username and Access Token with write permission from `huggingface.co/settings/tokens`)*.
+3. Your web app is immediately live at:
+   `https://huggingface.co/spaces/TemurbekHamzaev/FloraGuardAI`
+
+### Option 2: Full Docker Container (For Users with Hugging Face PRO or Render)
+If you have a paid Docker runtime, you can also deploy the full Python FastAPI backend:
+1. Choose **Docker** SDK when creating the Space.
+2. Push the repository; the bundled `Dockerfile` will build CPU PyTorch and mount `custom_cnn_best.pt` automatically on port 7860.
 
 ---
 

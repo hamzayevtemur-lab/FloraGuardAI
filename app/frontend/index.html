@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/style.css?v=3.0">
+  <link rel="stylesheet" href="style.css?v=3.1">
 </head>
 <body>
   <!-- Ambient background glow elements -->
@@ -123,10 +123,10 @@
         <div class="samples-wrapper">
           <span class="samples-label">Or try a benchmark sample:</span>
           <div class="sample-chips">
-            <button type="button" class="sample-chip" data-sample="/static/samples/sample_apple_scab.jpg">🍏 Apple Scab</button>
-            <button type="button" class="sample-chip" data-sample="/static/samples/sample_potato_early_blight.jpg">🥔 Potato Blight</button>
-            <button type="button" class="sample-chip" data-sample="/static/samples/sample_tomato_healthy.jpg">🍅 Healthy Tomato</button>
-            <button type="button" class="sample-chip" data-sample="/static/samples/sample_corn_healthy.jpg">🌽 Healthy Corn</button>
+            <button type="button" class="sample-chip" data-sample="samples/sample_apple_scab.jpg">🍏 Apple Scab</button>
+            <button type="button" class="sample-chip" data-sample="samples/sample_potato_early_blight.jpg">🥔 Potato Blight</button>
+            <button type="button" class="sample-chip" data-sample="samples/sample_tomato_healthy.jpg">🍅 Healthy Tomato</button>
+            <button type="button" class="sample-chip" data-sample="samples/sample_corn_healthy.jpg">🌽 Healthy Corn</button>
           </div>
         </div>
 
@@ -402,7 +402,7 @@
               <h4 class="chart-title">Test Accuracy, Macro-F1 & Parameter Footprint</h4>
             </div>
             <div class="chart-img-container">
-              <img src="/static/charts/test_benchmark_comparison.png" alt="Empirical Test Set Benchmark Comparison" class="chart-img" loading="lazy">
+              <img src="charts/test_benchmark_comparison.png" alt="Empirical Test Set Benchmark Comparison" class="chart-img" loading="lazy">
             </div>
             <p class="chart-caption">
               Comparative analysis on the <strong>unseen 5,431-leaf test set</strong>. <strong>MobileNetV3-Large</strong> clinched 1st place with 99.84% accuracy while maintaining a compact 16.2 MB footprint — achieving a 20× parameter compression compared to ViT-Base.
@@ -416,7 +416,7 @@
               <h4 class="chart-title">Validation Loss Decay & Accuracy Convergence</h4>
             </div>
             <div class="chart-img-container">
-              <img src="/static/charts/loss_convergence.png" alt="Validation Loss Convergence Curves" class="chart-img" loading="lazy">
+              <img src="charts/loss_convergence.png" alt="Validation Loss Convergence Curves" class="chart-img" loading="lazy">
             </div>
             <p class="chart-caption">
               Tracking cross-entropy validation loss over training iterations. <strong>ViT-Base</strong> converged in only 3 epochs due to self-attention pre-training representations, whereas the <strong>Custom CNN</strong> demonstrated steady gradient descent across 24 epochs.
@@ -430,7 +430,7 @@
               <h4 class="chart-title">FloraGuard End-to-End Deep Learning & Guardrail Pipeline</h4>
             </div>
             <div class="chart-img-container">
-              <img src="/static/charts/architectural_pipeline.png" alt="FloraGuard End-to-End Architectural Pipeline" class="chart-img" loading="lazy">
+              <img src="charts/architectural_pipeline.png" alt="FloraGuard End-to-End Architectural Pipeline" class="chart-img" loading="lazy">
             </div>
             <p class="chart-caption">
               <strong>End-to-End Diagnostic Architecture:</strong> Full operational dataflow from client leaf ingestion, through FastAPI async gateways and dual-tier bio-optical / neural guardrails, to PyTorch accelerated inference and agronomic treatment synthesis.
@@ -670,6 +670,7 @@
       }
     }
   </script>
-  <script src="/static/app.js?v=3.0"></script>
+  <script src="disease_info.js"></script>
+  <script src="app.js?v=3.1"></script>
 </body>
 </html>
